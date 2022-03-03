@@ -1,0 +1,20 @@
+.navigationContainer {
+    width: 5vw;
+    height: 100vh;
+    background-color: #6D956F;
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    align-items: center;
+
+    .navItem {
+        width: 3vw;
+        height: auto;
+        margin-bottom: 32px;
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+}
