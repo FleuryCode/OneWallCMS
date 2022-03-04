@@ -53,8 +53,8 @@ class Home extends React.Component {
                 <div className="row">
                     {
                         dataKeys.map(key => (
-                            <div className="col-12 mb-3">
-                                <EditBox key={key} header={key} body={displayedData[key]} pickedPage={pickedPage} />
+                            <div key={key} className="col-12 mb-3">
+                                <EditBox header={key} body={displayedData[key]} pickedPage={pickedPage} />
                             </div>
                         ))
                     }
