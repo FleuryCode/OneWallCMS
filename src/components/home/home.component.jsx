@@ -1,31 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import './home.styles.scss';
 
 import { firestore } from '../../firebase/firebase.utils';
+import EditBox from "../editBox/editBox.component";
 
 class Home extends React.Component {
     constructor() {
         super();
         this.state = {
-            homePageData: {}
+            displayedData: {},
+            pickedPage: 'Homepage'
         }
     }
 
     componentDidMount() {
         // Grabbing Collection TextChanges
         const textChangesRef = firestore.collection('TextChanges');
+
+
         textChangesRef.onSnapshot(async snapshot => {
             const docArray = snapshot.docs;
 
-            // Homepage
-            const homePageInfo = docArray[0].data();
-            this.setState({
-                homePageData: homePageInfo
-            });
+            for (let i = 0; i < docArray.length; i++) {
+                const id = docArray[i].id;
+                if (id === this.state.pickedPage) {
+                    const data = docArray[i].data();
+                    this.setState({
+                        displayedData: data
+                    });
+                }
+            }
         });
     }
     render() {
-        const { homePageData } = this.state;
+        const { displayedData, pickedPage } = this.state;
+        const dataKeys = Object.keys(displayedData);
+
+
+
         return (
             <div className="homeContainer container-fluid">
                 <div className="row">
@@ -34,11 +46,19 @@ class Home extends React.Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-12 col-md-6">
-                        <div className="infoBox">
-                            <h4>{homePageData.HeroBody}</h4>
-                        </div>
+                    <div className="col-12">
+
                     </div>
+                </div>
+                <div className="row">
+                    {
+                        dataKeys.map(key => (
+                            <div className="col-12 mb-3">
+                                <EditBox key={key} header={key} body={displayedData[key]} pickedPage={pickedPage} />
+                            </div>
+                        ))
+                    }
+
                 </div>
             </div>
         );
