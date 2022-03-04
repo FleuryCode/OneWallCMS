@@ -10,7 +10,7 @@ import {setCurrentUser, setIsLoggedIn} from '../../redux/users/user.actions';
 import { connect } from "react-redux";
 
 
-const SignInPage = () => {
+const SignInPage = ({setCurrentUser, setIsLoggedIn}) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -35,7 +35,6 @@ const SignInPage = () => {
             setPassword('');
             setLoading(false);
 
-            console.log('User is logged in');
             // Redux
             setCurrentUser(auth.currentUser.uid);
             setIsLoggedIn(true)
@@ -45,6 +44,11 @@ const SignInPage = () => {
             console.log(error);
         }
 
+    }
+
+    const testFunction = () => {
+        console.log('test')
+        setIsLoggedIn(true);
     }
 
     return (
