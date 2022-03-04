@@ -1,0 +1,42 @@
+.buttonContainer {
+    max-width: 90%;
+    min-width: 140px;
+    text-align: center;
+    height: 48px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+
+
+    // Contact Page Button
+    &.contact,
+    &.booking {
+        background-color: #6D956F;
+        color: white;
+        font-weight: 500;
+        border: #6D956F 2px solid;
+        transition: background-color 0.4s, border 0.4s;
+
+        &:hover,
+        &:active {
+            background-color: #9dbd9f;
+            border: #9dbd9f 2px solid;
+        }
+    }
+
+    &.footer {
+        background-color: white;
+        color: black;
+        font-weight: 500;
+        transition: color 0.5s, background-color 0.5s;
+
+        &:hover,
+        &:active {
+            background-color: #6D956F;
+            color: white;
+        }
+    }
+}

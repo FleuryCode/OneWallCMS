@@ -1,9 +1,3 @@
 .App {
-  display: flex;
-}
-
-.servicesContainer {
-  width: 95vw;
-  min-height: 100vh;
-  background-color: #E8EBEB;
+width: 100%;
 }
