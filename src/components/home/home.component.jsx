@@ -15,6 +15,7 @@ const Home = ({ data, selectedPage }) => {
     }
 
     const dataKeys = Object.keys(mainData);
+    dataKeys.sort();
     const pageList = [
         {
             id: 1,
