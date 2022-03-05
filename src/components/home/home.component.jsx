@@ -1,68 +1,67 @@
 import React from "react";
 import './home.styles.scss';
-
-import { firestore } from '../../firebase/firebase.utils';
 import EditBox from "../editBox/editBox.component";
+import CustomDropDown from '../customDropdown/CustomDropDown.component';
+import { connect } from 'react-redux';
 
-class Home extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            displayedData: {},
-            pickedPage: 'Homepage'
+const Home = ({ data, selectedPage }) => {
+
+    let mainData = {}
+    for (let i = 0; i < data.length; i++) {
+        const id = data[i].id;
+        if (id === selectedPage) {
+            mainData = data[i].data();
         }
     }
 
-    componentDidMount() {
-        // Grabbing Collection TextChanges
-        const textChangesRef = firestore.collection('TextChanges');
+    const dataKeys = Object.keys(mainData);
+    const pageList = [
+        {
+            id: 1,
+            page: 'Homepage'
+        },
+        {
+            id: 2,
+            page: 'About'
+        },
+        {
+            id: 3,
+            page: 'Services'
+        },
+    ];
 
-
-        textChangesRef.onSnapshot(async snapshot => {
-            const docArray = snapshot.docs;
-
-            for (let i = 0; i < docArray.length; i++) {
-                const id = docArray[i].id;
-                if (id === this.state.pickedPage) {
-                    const data = docArray[i].data();
-                    this.setState({
-                        displayedData: data
-                    });
-                }
-            }
-        });
-    }
-    render() {
-        const { displayedData, pickedPage } = this.state;
-        const dataKeys = Object.keys(displayedData);
-
-
-
-        return (
-            <div className="homeContainer container-fluid">
-                <div className="row">
-                    <div className="col-12">
-                        <h1 className="text-center">Update the Website</h1>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-12">
-
-                    </div>
-                </div>
-                <div className="row">
-                    {
-                        dataKeys.map(key => (
-                            <div key={key} className="col-12 mb-3">
-                                <EditBox header={key} body={displayedData[key]} pickedPage={pickedPage} />
-                            </div>
-                        ))
-                    }
-
+    return (
+        <div className="homeContainer container-fluid">
+            <div className="row">
+                <div className="col-12">
+                    <h1 className="text-center">Update the Website</h1>
                 </div>
             </div>
-        );
-    }
+            <div className="row">
+                <div className="col-12">
+                    <CustomDropDown pageList={pageList} />
+                </div>
+            </div>
+            <div className="row">
+                {
+                    dataKeys.map(key => (
+                        <div key={key} className="col-12 mb-3">
+                            <EditBox header={key} body={mainData[key]} pickedPage={selectedPage} />
+                        </div>
+                    ))
+                }
+
+            </div>
+        </div>
+    );
+
 }
 
-export default Home;
+
+
+const mapStateToProps = (state) => ({
+    selectedPage: state.textChange.selectedPage,
+    data: state.textChange.data
+});
+
+export default connect(mapStateToProps)(Home);
