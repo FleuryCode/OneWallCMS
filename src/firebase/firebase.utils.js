@@ -1,6 +1,9 @@
 import firebase from 'firebase/compat/app';
+import { initializeApp } from "firebase/app";
+import { getStorage } from "firebase/storage";
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
+import 'firebase/compat/storage';
 import { KEYS } from '../Keys';
 
 const firebaseConfig = {
@@ -15,7 +18,12 @@ const firebaseConfig = {
 
   firebase.initializeApp(firebaseConfig);
 
+  const firebaseApp = initializeApp(firebaseConfig);
+
+  export const portfolioStorage = getStorage(firebaseApp);
+
   export const auth = firebase.auth();
   export const firestore = firebase.firestore();
+
 
   export default firebase;

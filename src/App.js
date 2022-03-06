@@ -5,7 +5,8 @@ import MainPage from './pages/MainPage/MainPage.page';
 import SignInPage from './pages/SignInPage/SignInPage.page';
 import { connect } from 'react-redux';
 import { setData } from './redux/textChanges/textChanges.actions';
-import { firestore } from './firebase/firebase.utils';
+import { firestore, fireStorage } from './firebase/firebase.utils';
+import { ref } from "firebase/storage";
 
 const App = ({ currentUser, isLoggedIn, setData }) => {
 
