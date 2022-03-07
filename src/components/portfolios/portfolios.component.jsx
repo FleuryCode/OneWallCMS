@@ -1,9 +1,10 @@
 import React from "react";
 import './portfolios.styles.scss';
 import { ref, getStorage, getDownloadURL, uploadBytes } from "firebase/storage";
-import { doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore"; 
+import { doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase.utils";
 import { async } from "@firebase/util";
+import PortfolioBox from "../portfolioBox/portfolioBox.component";
 
 
 const PortfoliosSection = () => {
@@ -25,17 +26,17 @@ const PortfoliosSection = () => {
                 }
             ]
         };
-            
+
 
         await setDoc(realEstatePortfolioRef, testValue);
-        
+
     }
 
     const getDataTest = async () => {
         const docRef = doc(db, "PortfolioImages", "Real Estate Images");
         const docSnap = await getDoc(docRef);
 
-        if(docSnap.exists()) {
+        if (docSnap.exists()) {
             const data = docSnap.data();
             const imageArray = data.images;
 
@@ -70,7 +71,7 @@ const PortfoliosSection = () => {
     };
 
     const onClickInputTest = () => {
-       
+
 
         const storageRef = ref(storage, `RealEstatePortfolio/${imageToUpload.name}`);
         const metaData = {
@@ -109,9 +110,9 @@ const PortfoliosSection = () => {
             uploadBytes(storageRef, multiFileArray[i], metaData).then((snapshot) => {
                 console.log('Complete')
             })
-            .catch((error) => {
-                console.log(error);
-            });
+                .catch((error) => {
+                    console.log(error);
+                });
         }
 
         document.getElementById('multiUpload').value = "";
@@ -138,6 +139,12 @@ const PortfoliosSection = () => {
             <br />
             <button onClick={testClick}>Test Button</button>
             <button onClick={getDataTest}>Test Two Button</button>
+            <br />
+            <br />
+
+            {/* Start of Real Component. Remove Top Once Done with Testing */}
+
+            <PortfolioBox />
         </div>
     );
 }
