@@ -1,0 +1,15 @@
+.portfolioBoxContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(216, 216, 216, 0.8);
+    border-radius: 12px;
+    padding: 1%;
+
+    .portfolioInside {
+        width: 100%;
+        flex-wrap: wrap;
+        display: flex;
+        justify-content: center;
+    }
+}

@@ -5,7 +5,7 @@ import TestImage from '../../assets/testImageOne.jpg';
 const PortfolioImage = ({imageUrl}) => {
     return (
         <div className="portfolioImageContainer">
-            <img src={TestImage} alt="" />
+            <img src={imageUrl} alt="" />
         </div>
     );
 }

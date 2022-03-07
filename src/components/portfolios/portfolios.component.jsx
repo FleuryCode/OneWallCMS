@@ -1,17 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import './portfolios.styles.scss';
 import { ref, getStorage, getDownloadURL, uploadBytes } from "firebase/storage";
 import { doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase.utils";
 import { async } from "@firebase/util";
 import PortfolioBox from "../portfolioBox/portfolioBox.component";
+import AddImageButton from "../addImageButton/addImageButton.component";
 
 
 const PortfoliosSection = () => {
 
+    const [testPortfolio, setTestPortfolio] = useState({});
+
     const storage = getStorage();
     const db = getFirestore();
+
+    
     const realEstatePortfolioRef = doc(db, 'PortfolioImages', 'Real Estate Images');
+    // We need redux. Maybe tomorrow?
+    // const portfolioSnap = getDoc(realEstatePortfolioRef);
+    // setTestPortfolio(portfolioSnap);
+
+    // console.log(testPortfolio);
+    
 
     const testClick = async () => {
         const testValue = {
@@ -32,6 +43,8 @@ const PortfoliosSection = () => {
 
     }
 
+
+
     const getDataTest = async () => {
         const docRef = doc(db, "PortfolioImages", "Real Estate Images");
         const docSnap = await getDoc(docRef);
@@ -40,9 +53,10 @@ const PortfoliosSection = () => {
             const data = docSnap.data();
             const imageArray = data.images;
 
-            console.log(imageArray);
+            console.log('Image Object', imageArray);
         }
     }
+
 
 
 
@@ -144,7 +158,17 @@ const PortfoliosSection = () => {
 
             {/* Start of Real Component. Remove Top Once Done with Testing */}
 
-            <PortfolioBox />
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-10">
+                        <PortfolioBox />
+                    </div>
+                    <div className="col-2">
+                        <AddImageButton />
+                    </div>
+                </div>
+            </div>
+
         </div>
     );
 }
