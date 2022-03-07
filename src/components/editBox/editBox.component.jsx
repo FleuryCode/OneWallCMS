@@ -21,18 +21,17 @@ const EditBox = ({ header, body, pickedPage }) => {
         setIsClicked(!isClicked);
     }
 
-    const updateClick = () => {
+    const updateClick = async () => {
         setIsUpdating(true)
-        return updateRef.update({
-            [header]: bodyText
-        })
-        .then(() => {
+        try {
+            await updateRef.update({
+                [header]: bodyText
+            });
             setIsUpdating(false);
-        })
-        .catch((error) => {
+        } catch (error) {
             console.log(error);
             setIsUpdating(false);
-        })
+        }
     }
 
     return (

@@ -1,11 +1,49 @@
 import React from "react";
 import './portfolios.styles.scss';
 import { ref, getStorage, getDownloadURL, uploadBytes } from "firebase/storage";
+import { doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore"; 
+import { firestore } from "../../firebase/firebase.utils";
+import { async } from "@firebase/util";
 
 
 const PortfoliosSection = () => {
 
     const storage = getStorage();
+    const db = getFirestore();
+    const realEstatePortfolioRef = doc(db, 'PortfolioImages', 'Real Estate Images');
+
+    const testClick = async () => {
+        const testValue = {
+            images: [
+                {
+                    id: 2,
+                    imageName: 'HelloWorld'
+                },
+                {
+                    id: 4,
+                    imageName: 'LetsTryThis'
+                }
+            ]
+        };
+            
+
+        await setDoc(realEstatePortfolioRef, testValue);
+        
+    }
+
+    const getDataTest = async () => {
+        const docRef = doc(db, "PortfolioImages", "Real Estate Images");
+        const docSnap = await getDoc(docRef);
+
+        if(docSnap.exists()) {
+            const data = docSnap.data();
+            const imageArray = data.images;
+
+            console.log(imageArray);
+        }
+    }
+
+
 
 
 
@@ -32,6 +70,7 @@ const PortfoliosSection = () => {
     };
 
     const onClickInputTest = () => {
+       
 
         const storageRef = ref(storage, `RealEstatePortfolio/${imageToUpload.name}`);
         const metaData = {
@@ -58,12 +97,15 @@ const PortfoliosSection = () => {
     };
 
     const multiClick = () => {
-        
         for (let i = 0; i < multiFileArray.length; i++) {
             const metaData = {
                 contentType: multiFileArray[i].type
             };
             const storageRef = ref(storage, `RealEstatePortfolio/${multiFileArray[i].name}`);
+            // Upload to DB
+
+
+            // Upload to Storage
             uploadBytes(storageRef, multiFileArray[i], metaData).then((snapshot) => {
                 console.log('Complete')
             })
@@ -71,6 +113,8 @@ const PortfoliosSection = () => {
                 console.log(error);
             });
         }
+
+        document.getElementById('multiUpload').value = "";
     };
 
 
@@ -90,6 +134,10 @@ const PortfoliosSection = () => {
             <br />
             <input type="file" multiple="multiple" id="multiUpload" accept="image/*" on onChange={multiUploadChange} />
             <button onClick={multiClick}>Multi Test</button>
+            <br />
+            <br />
+            <button onClick={testClick}>Test Button</button>
+            <button onClick={getDataTest}>Test Two Button</button>
         </div>
     );
 }

@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
+import { getFirestore } from "firebase/firestore";
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import 'firebase/compat/storage';
@@ -21,6 +22,7 @@ const firebaseConfig = {
   const firebaseApp = initializeApp(firebaseConfig);
 
   export const portfolioStorage = getStorage(firebaseApp);
+  export const db = getFirestore();
 
   export const auth = firebase.auth();
   export const firestore = firebase.firestore();
