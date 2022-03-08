@@ -1,5 +1,6 @@
 import React from "react";
 import PortfolioImage from "../portfolioImage/portfolioImage.component";
+import { connect } from "react-redux";
 import './portfolioBox.styles.scss';
 
 const PortfolioBox = ({ imageList, isLoading }) => {
@@ -26,4 +27,8 @@ const PortfolioBox = ({ imageList, isLoading }) => {
     );
 }
 
-export default PortfolioBox;
+const mapStateToProps = (state) => ({
+    isLoading: state.portfolio.imagesLoading
+});
+
+export default connect(mapStateToProps)(PortfolioBox);

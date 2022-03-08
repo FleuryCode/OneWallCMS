@@ -1,7 +1,9 @@
 import { PortfolioUpdateTypes } from "./portfolioUpdates.types";
 
 const INITIAL_STATE = {
-    allPortfolios: []
+    allPortfolios: [],
+    urlList: [],
+    imagesLoading: true
 };
 
 const portfolioUpdateReducer = (state = INITIAL_STATE, action) => {
@@ -10,6 +12,16 @@ const portfolioUpdateReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 allPortfolios: action.payload
+            }
+        case PortfolioUpdateTypes.SET_URL_LIST:
+            return {
+                ...state,
+                urlList: action.payload
+            }
+        case PortfolioUpdateTypes.SET_IMAGES_LOADING:
+            return {
+                ...state,
+                imagesLoading: action.payload
             }
         default:
             return state

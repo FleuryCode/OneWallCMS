@@ -7,12 +7,9 @@ import { storage } from "../../firebase/firebase.utils";
 import { connect } from "react-redux";
 
 
-const PortfoliosSection = ({ portfolios }) => {
-
+const PortfoliosSection = ({ portfolios, urlList }) => {
+    
     const selectedPortfolio = 'Real Estate Images'; //Change to dynamic
-    const [urlList, setUrlList] = useState([]);
-    const [imagesLoading, setImagesLoading] = useState(true);
-
     // Real Estate Portfolio (Eventually make this dynamic based on selection of portfolio)
     let realEstatePortfolio = {} //Change this eventually to be selectedPortfolio
     if (portfolios.length > 0) {
@@ -23,25 +20,12 @@ const PortfoliosSection = ({ portfolios }) => {
         };
     }
 
-    const grabUrlList = async () => {
-        let portfolioUrlList = [];
-        for (let j = 0; j < realEstatePortfolio.images.length; j++) {
-            await getDownloadURL(ref(storage, `RealEstatePortfolio/${realEstatePortfolio.images[j].imageName}`))
-                .then((url) => {
-                    portfolioUrlList.push(url);
-                })
-                .catch((error) => {
-                    console.log(error)
-                });
-        };
-        setUrlList(portfolioUrlList);
-        setImagesLoading(false);
-    };
+    
 
 
-    useEffect(() => {
-        grabUrlList();
-    });
+    // useEffect(() => {
+        
+    // });
 
     return (
         <div className="portfoliosSectionContainer">
@@ -49,7 +33,7 @@ const PortfoliosSection = ({ portfolios }) => {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-10">
-                        <PortfolioBox imageList={urlList} isLoading={imagesLoading} />
+                        <PortfolioBox imageList={urlList} />
                     </div>
                     <div className="col-2">
                         <AddImageButton imageArrayObject={realEstatePortfolio} />
@@ -62,7 +46,8 @@ const PortfoliosSection = ({ portfolios }) => {
 }
 
 const mapStateToProps = (state) => ({
-    portfolios: state.portfolio.allPortfolios
+    portfolios: state.portfolio.allPortfolios,
+    urlList: state.portfolio.urlList
 });
 
 export default connect(mapStateToProps)(PortfoliosSection);
