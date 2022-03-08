@@ -17,6 +17,7 @@ const Home = ({ data, selectedPage }) => {
 
     const dataKeys = Object.keys(mainData);
     dataKeys.sort();
+    // PageList needs to be dynamic based on the pages available.
     const pageList = [
         {
             id: 1,
