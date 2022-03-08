@@ -3,18 +3,20 @@ import './SignInPage.styles.scss';
 import CustomInput from "../../components/customInput/CustomInput.component";
 import CustomButton from '../../components/customButton/CustomButton.component';
 import Logo from '../../../src/logo.svg';
-import { auth } from "../../firebase/firebase.utils";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 // Redux
-import {setCurrentUser, setIsLoggedIn} from '../../redux/users/user.actions';
+import { setCurrentUser, setIsLoggedIn } from '../../redux/users/user.actions';
 import { connect } from "react-redux";
 
 
-const SignInPage = ({setCurrentUser, setIsLoggedIn}) => {
+const SignInPage = ({ setCurrentUser, setIsLoggedIn }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const auth = getAuth();
 
     const handleChange = (event) => {
         const { value, name } = event.target;
@@ -30,7 +32,7 @@ const SignInPage = ({setCurrentUser, setIsLoggedIn}) => {
 
         setLoading(true);
         try {
-            await auth.signInWithEmailAndPassword(email, password);
+            signInWithEmailAndPassword(auth, email, password);
             setEmail('');
             setPassword('');
             setLoading(false);
@@ -44,11 +46,6 @@ const SignInPage = ({setCurrentUser, setIsLoggedIn}) => {
             console.log(error);
         }
 
-    }
-
-    const testFunction = () => {
-        console.log('test')
-        setIsLoggedIn(true);
     }
 
     return (

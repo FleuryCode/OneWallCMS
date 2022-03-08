@@ -1,170 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './portfolios.styles.scss';
-import { ref, getStorage, getDownloadURL, uploadBytes } from "firebase/storage";
-import { doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
-import { firestore } from "../../firebase/firebase.utils";
-import { async } from "@firebase/util";
+import { ref, getDownloadURL } from "firebase/storage";
 import PortfolioBox from "../portfolioBox/portfolioBox.component";
 import AddImageButton from "../addImageButton/addImageButton.component";
+import { storage } from "../../firebase/firebase.utils";
+import { connect } from "react-redux";
 
 
-const PortfoliosSection = () => {
+const PortfoliosSection = ({ portfolios }) => {
 
-    const [testPortfolio, setTestPortfolio] = useState({});
+    const selectedPortfolio = 'Real Estate Images'; //Change to dynamic
+    const [urlList, setUrlList] = useState([]);
+    const [imagesLoading, setImagesLoading] = useState(true);
 
-    const storage = getStorage();
-    const db = getFirestore();
-
-    
-    const realEstatePortfolioRef = doc(db, 'PortfolioImages', 'Real Estate Images');
-    // We need redux. Maybe tomorrow?
-    // const portfolioSnap = getDoc(realEstatePortfolioRef);
-    // setTestPortfolio(portfolioSnap);
-
-    // console.log(testPortfolio);
-    
-
-    const testClick = async () => {
-        const testValue = {
-            images: [
-                {
-                    id: 2,
-                    imageName: 'HelloWorld'
-                },
-                {
-                    id: 4,
-                    imageName: 'LetsTryThis'
-                }
-            ]
+    // Real Estate Portfolio (Eventually make this dynamic based on selection of portfolio)
+    let realEstatePortfolio = {} //Change this eventually to be selectedPortfolio
+    if (portfolios.length > 0) {
+        for (let i = 0; i < portfolios.length; i++) {
+            if (portfolios[i].id === selectedPortfolio) {
+                realEstatePortfolio = portfolios[i].data();
+            }
         };
-
-
-        await setDoc(realEstatePortfolioRef, testValue);
-
     }
 
-
-
-    const getDataTest = async () => {
-        const docRef = doc(db, "PortfolioImages", "Real Estate Images");
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            const imageArray = data.images;
-
-            console.log('Image Object', imageArray);
-        }
-    }
-
-
-
-
-
-
-    // Downloading a File
-    getDownloadURL(ref(storage, 'RealEstatePortfolio/testImageOne.jpg'))
-        .then((url) => {
-            const img = document.getElementById('testImage');
-            img.setAttribute('src', url);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-
-
-    // Uploading a Single File
-
-    let imageToUpload = {};
-
-    const imageInputChange = (event) => {
-        if (event.target.files && event.target.files[0]) {
-            const image = event.target.files[0];
-            imageToUpload = image;
-        }
-    };
-
-    const onClickInputTest = () => {
-
-
-        const storageRef = ref(storage, `RealEstatePortfolio/${imageToUpload.name}`);
-        const metaData = {
-            contentType: imageToUpload.type
-        };
-        uploadBytes(storageRef, imageToUpload, metaData).then((snapshot) => {
-            console.log(snapshot);
-            console.log('Image Uploaded');
-        })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
-
-
-    // This Works
-    // Testing Multiple File Upload
-    let multiFileArray = {}
-    const multiUploadChange = (event) => {
-        if (event.target.files && event.target.files[0]) {
-            const fileArray = event.target.files;
-            multiFileArray = fileArray;
-        }
-    };
-
-    const multiClick = () => {
-        for (let i = 0; i < multiFileArray.length; i++) {
-            const metaData = {
-                contentType: multiFileArray[i].type
-            };
-            const storageRef = ref(storage, `RealEstatePortfolio/${multiFileArray[i].name}`);
-            // Upload to DB
-
-
-            // Upload to Storage
-            uploadBytes(storageRef, multiFileArray[i], metaData).then((snapshot) => {
-                console.log('Complete')
-            })
+    const grabUrlList = async () => {
+        let portfolioUrlList = [];
+        for (let j = 0; j < realEstatePortfolio.images.length; j++) {
+            await getDownloadURL(ref(storage, `RealEstatePortfolio/${realEstatePortfolio.images[j].imageName}`))
+                .then((url) => {
+                    portfolioUrlList.push(url);
+                })
                 .catch((error) => {
-                    console.log(error);
+                    console.log(error)
                 });
-        }
-
-        document.getElementById('multiUpload').value = "";
+        };
+        setUrlList(portfolioUrlList);
+        setImagesLoading(false);
     };
 
 
-
-
-
+    useEffect(() => {
+        grabUrlList();
+    });
 
     return (
         <div className="portfoliosSectionContainer">
             <h1>Portfolios</h1>
-            <img id="testImage" alt="" />
-            <br />
-            <br />
-            <input type="file" name="imageUpload" id="imageUpload" accept="image/*" onChange={imageInputChange} />
-            <button onClick={onClickInputTest}>Test Input</button>
-            <br />
-            <br />
-            <input type="file" multiple="multiple" id="multiUpload" accept="image/*" on onChange={multiUploadChange} />
-            <button onClick={multiClick}>Multi Test</button>
-            <br />
-            <br />
-            <button onClick={testClick}>Test Button</button>
-            <button onClick={getDataTest}>Test Two Button</button>
-            <br />
-            <br />
-
-            {/* Start of Real Component. Remove Top Once Done with Testing */}
-
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-10">
-                        <PortfolioBox />
+                        <PortfolioBox imageList={urlList} isLoading={imagesLoading} />
                     </div>
                     <div className="col-2">
-                        <AddImageButton />
+                        <AddImageButton imageArrayObject={realEstatePortfolio} />
                     </div>
                 </div>
             </div>
@@ -173,4 +61,8 @@ const PortfoliosSection = () => {
     );
 }
 
-export default PortfoliosSection;
+const mapStateToProps = (state) => ({
+    portfolios: state.portfolio.allPortfolios
+});
+
+export default connect(mapStateToProps)(PortfoliosSection);

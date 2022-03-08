@@ -1,10 +1,18 @@
 .portfolioBoxContainer {
     width: 100%;
+    min-height: 400px;
     display: flex;
     justify-content: center;
     background-color: rgba(216, 216, 216, 0.8);
     border-radius: 12px;
     padding: 1%;
+
+    .spinner-border {
+        color: #6D956F;
+        align-self: center;
+        height: 10vw;
+        width: 10vw;
+    }
 
     .portfolioInside {
         width: 100%;

@@ -8,6 +8,7 @@ import Schedule from '../../components/schedule/schedule.component';
 import PortfoliosSection from "../../components/portfolios/portfolios.component";
 
 const MainPage = () => {
+
     return (
         <div className="mainPageContainer">
             <Navigation />

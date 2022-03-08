@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import CustomButton from "../customButton/CustomButton.component";
 import CustomTextArea from "../customTextArea/CustomTextArea.component";
 import './editBox.styles.scss';
-import { firestore } from "../../firebase/firebase.utils";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase/firebase.utils";
+
 
 const EditBox = ({ header, body, pickedPage }) => {
     const [bodyText, setBodyText] = useState(body);
     const [isClicked, setIsClicked] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
 
-    const updateRef = firestore.collection('TextChanges').doc(pickedPage);
+    const updateRef = doc(db, 'TextChanges', pickedPage);
+    
     
 
     const handleChange = (event) => {
@@ -24,7 +27,7 @@ const EditBox = ({ header, body, pickedPage }) => {
     const updateClick = async () => {
         setIsUpdating(true)
         try {
-            await updateRef.update({
+            await updateDoc(updateRef, {
                 [header]: bodyText
             });
             setIsUpdating(false);

@@ -1,29 +1,12 @@
 import React, { useState } from "react";
 import './addImageButton.styles.scss';
 import PlusIcon from '../../assets/plusSignIcon.svg';
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { ref, uploadBytes } from "firebase/storage";
+import { db, storage } from "../../firebase/firebase.utils";
+import { doc, setDoc } from "firebase/firestore";
 
 const AddImageButton = ({selectedPortfolio, imageArrayObject}) => {
     const [fileUploading, setFileUploading] = useState(false);
-    const [uploadArray, setUploadArray] = useState([]);
-
-    const db = getFirestore();
-    const storage = getStorage();
-
-    // Test Array
-    const testArray = {
-        images: [
-            {
-                id: 1,
-                imageName: 'HelloWorld'
-            },
-            {
-                id: 2,
-                imageName: 'LetsTryThis'
-            }
-        ]
-    };
 
 
     const hiddenFileInput = React.useRef(null);
@@ -31,9 +14,7 @@ const AddImageButton = ({selectedPortfolio, imageArrayObject}) => {
         hiddenFileInput.current.click();
     }
 
-
-    const multiUploadChange = async (event) => {
-        
+    const multiUploadChange = async (event) => { 
         if (event.target.files && event.target.files[0]) {
             const fileArray = event.target.files;
             setFileUploading(true)
@@ -46,9 +27,9 @@ const AddImageButton = ({selectedPortfolio, imageArrayObject}) => {
                 // Upload to Storage
                 await uploadBytes(storageRef, fileArray[i], metadata)
                 .then((snapshot) => {
-                    testArray.images.push(
+                    imageArrayObject.images.push(
                         {
-                            id: testArray.images.length + 1,
+                            id: imageArrayObject.images.length + 1,
                             imageName: fileArray[i].name
                         }
                     )
@@ -59,15 +40,12 @@ const AddImageButton = ({selectedPortfolio, imageArrayObject}) => {
                 })
             }
             // Waits until After Loop is done
-            console.log('After Loop', testArray);
+            console.log('After Loop', imageArrayObject);
             const realEstatePortfolioRef = doc(db, 'PortfolioImages', 'Real Estate Images');
-            await setDoc(realEstatePortfolioRef, testArray);
+            await setDoc(realEstatePortfolioRef, imageArrayObject);
             console.log('Upload Array to DB Complete')
             setFileUploading(false);
-
-
         }
-
     };
 
 

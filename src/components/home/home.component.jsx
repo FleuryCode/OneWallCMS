@@ -7,10 +7,11 @@ import { connect } from 'react-redux';
 const Home = ({ data, selectedPage }) => {
 
     let mainData = {}
-    for (let i = 0; i < data.length; i++) {
-        const id = data[i].id;
+    
+    for (let i = 0; i < data.docs.length; i++) {
+        const id = data.docs[i].id;
         if (id === selectedPage) {
-            mainData = data[i].data();
+            mainData = data.docs[i].data();
         }
     }
 
