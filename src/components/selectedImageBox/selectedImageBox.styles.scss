@@ -1,0 +1,31 @@
+.selectedImageBoxContainer {
+    width: 80vw;
+    height: 60vh;
+    display: flex;
+    flex-direction: row;
+    background: white;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.4);
+
+    .imgContainer {
+        width: 60%;
+        height: 90%;
+        
+
+        img {
+            width: auto;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 12px;
+        }
+    }
+
+    .imgInfoContainer {
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

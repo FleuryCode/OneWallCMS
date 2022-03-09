@@ -2,7 +2,7 @@ import React from "react";
 import './portfolioImage.styles.scss';
 import { connect } from "react-redux";
 
-const PortfolioImage = ({ imageUrl, isLoading }) => {
+const PortfolioImage = ({ imageUrl, isLoading, clickHandle }) => {
     return (
         <div className="portfolioImageContainer">
             {
@@ -12,7 +12,7 @@ const PortfolioImage = ({ imageUrl, isLoading }) => {
                             <span className="visually-hidden">Loading...</span>
                         </div>
                     </div>
-                    : <img src={imageUrl} alt="" />
+                    : <img onClick={() => clickHandle(imageUrl)} src={imageUrl} alt="" />
             }
 
         </div>

@@ -7,6 +7,19 @@
     border-radius: 12px;
     padding: 1%;
 
+    .selectedImageInfoContainer {
+        width: 100vw;
+        height: 100vh;
+        z-index: 50;
+        background-color: rgba(0, 0, 0, 0.4);
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .portfolioInside {
         width: 100%;
         flex-wrap: wrap;
