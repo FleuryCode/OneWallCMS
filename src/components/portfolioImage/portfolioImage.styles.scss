@@ -13,6 +13,25 @@
         cursor: move;
     }
 
+    .spinnerContainer {
+        height: 100%;
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+        background-color: rgba(185, 185, 185, 0.2);
+        display: flex;
+        justify-content: center;
+        .spinner-border {
+            color: #6D956F;
+            align-self: center;
+            height: 4vw;
+            width: 4vw;
+        }
+    }
+
+    
+
+
     &:last-child {
         margin-right: auto;
     }

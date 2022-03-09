@@ -14,3 +14,8 @@ export const setImagesLoading = (isLoading) => ({
     type: PortfolioUpdateTypes.SET_IMAGES_LOADING,
     payload: isLoading
 });
+
+export const setSelectedPortfolio = (portfolio) => ({
+    type: PortfolioUpdateTypes.SET_SELECTED_PORTFOLIO,
+    payload: portfolio
+});

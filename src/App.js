@@ -32,14 +32,15 @@ const App = ({ currentUser, isLoggedIn, setData, setAllPortfolios, setUrlList, s
       const getRealEstatePortfolioArray = async () => {
         let realEstatePortfolioArray = [];
         let portfolioUrlList = [];
+        setImagesLoading(true);
         for (let i = 0; i < portfoliosSnapshot.length; i++) {
-          if (portfoliosSnapshot[i].id === 'Real Estate Images') {
+          if (portfoliosSnapshot[i].id === 'Real Estate Portfolio') {
             realEstatePortfolioArray = portfoliosSnapshot[i].data().images;
           }
         }
 
         for (let j = 0; j < realEstatePortfolioArray.length; j++) {
-          await getDownloadURL(ref(storage, `RealEstatePortfolio/${realEstatePortfolioArray[j].imageName}`))
+          await getDownloadURL(ref(storage, `Real Estate Portfolio/${realEstatePortfolioArray[j].imageName}`))
             .then((url) => {
               portfolioUrlList.push(url);
 

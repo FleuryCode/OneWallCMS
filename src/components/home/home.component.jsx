@@ -17,7 +17,6 @@ const Home = ({ data, selectedPage }) => {
 
     const dataKeys = Object.keys(mainData);
     dataKeys.sort();
-    // PageList needs to be dynamic based on the pages available.
     const pageList = [
         {
             id: 1,
@@ -42,7 +41,7 @@ const Home = ({ data, selectedPage }) => {
             </div>
             <div className="row">
                 <div className="col-12">
-                    <CustomDropDown pageList={pageList} />
+                    <CustomDropDown section={'Home'} pageList={pageList} />
                 </div>
             </div>
             <div className="row">

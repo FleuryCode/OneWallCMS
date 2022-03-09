@@ -3,7 +3,7 @@ import './addImageButton.styles.scss';
 import PlusIcon from '../../assets/plusSignIcon.svg';
 import { ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../../firebase/firebase.utils";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 const AddImageButton = ({selectedPortfolio, imageArrayObject}) => {
     const [fileUploading, setFileUploading] = useState(false);
@@ -23,7 +23,7 @@ const AddImageButton = ({selectedPortfolio, imageArrayObject}) => {
                 const metadata = {
                     contentType: fileArray[i].type
                 };
-                const storageRef = ref(storage, `RealEstatePortfolio/${fileArray[i].name}`);
+                const storageRef = ref(storage, `Real Estate Portfolio/${fileArray[i].name}`);
                 // Upload to Storage
                 await uploadBytes(storageRef, fileArray[i], metadata)
                 .then((snapshot) => {
@@ -41,8 +41,8 @@ const AddImageButton = ({selectedPortfolio, imageArrayObject}) => {
             }
             // Waits until After Loop is done
             console.log('After Loop', imageArrayObject);
-            const realEstatePortfolioRef = doc(db, 'PortfolioImages', 'Real Estate Images');
-            await setDoc(realEstatePortfolioRef, imageArrayObject);
+            const realEstatePortfolioRef = doc(db, 'PortfolioImages', 'Real Estate Portfolio');
+            await updateDoc(realEstatePortfolioRef, imageArrayObject);
             console.log('Upload Array to DB Complete')
             setFileUploading(false);
         }

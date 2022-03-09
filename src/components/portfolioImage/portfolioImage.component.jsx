@@ -1,13 +1,26 @@
 import React from "react";
 import './portfolioImage.styles.scss';
-import TestImage from '../../assets/testImageOne.jpg';
+import { connect } from "react-redux";
 
-const PortfolioImage = ({imageUrl}) => {
+const PortfolioImage = ({ imageUrl, isLoading }) => {
     return (
         <div className="portfolioImageContainer">
-            <img src={imageUrl} alt="" />
+            {
+                isLoading ?
+                    <div className="spinnerContainer">
+                        <div className="spinner-border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    : <img src={imageUrl} alt="" />
+            }
+
         </div>
     );
 }
 
-export default PortfolioImage;
+const mapStateToProps = (state) => ({
+    isLoading: state.portfolio.imagesLoading
+});
+
+export default connect(mapStateToProps)(PortfolioImage);
