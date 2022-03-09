@@ -10,7 +10,6 @@ import { setAllPortfolios, setUrlList, setImagesLoading } from './redux/portfoli
 import { getDocs, collection, query, onSnapshot } from "firebase/firestore";
 import { db, storage } from './firebase/firebase.utils';
 import { getDownloadURL, ref } from 'firebase/storage';
-import { async } from '@firebase/util';
 
 const App = ({ currentUser, isLoggedIn, setData, setAllPortfolios, setUrlList, setImagesLoading }) => {
 
@@ -53,32 +52,9 @@ const App = ({ currentUser, isLoggedIn, setData, setAllPortfolios, setUrlList, s
         setImagesLoading(false);
         setUrlList(portfolioUrlList);
       }
-      
       getRealEstatePortfolioArray();
-
-
-
-
-
-      // setUrlList(portfolioUrlList);
     });
   };
-
-  //   const grabUrlList = async () => {
-  //     let portfolioUrlList = [];
-  //     for (let j = 0; j < realEstatePortfolio.images.length; j++) {
-  //         await getDownloadURL(ref(storage, `RealEstatePortfolio/${realEstatePortfolio.images[j].imageName}`))
-  //             .then((url) => {
-  //                 portfolioUrlList.push(url);
-  //             })
-  //             .catch((error) => {
-  //                 console.log(error)
-  //             });
-  //     };
-  //     setUrlList(portfolioUrlList);
-  //     setImagesLoading(false);
-  // };
-
 
   useEffect(() => {
     grabTextChangeSnap();
